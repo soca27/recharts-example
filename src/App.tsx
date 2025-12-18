@@ -1,14 +1,14 @@
 import { SentimentStackList } from "./SentimentStackList"
 import { ChartAreaLegend } from "./ChartAreaLegend"
 import { ChartBarLabel } from "./ChartBarLabel"
-import { ChartPieDonut } from "./ChartPieDonut"
+import { ChartPieDonutWithText } from "./ChartPieDonutWithText"
 import { ChartBarVerticalStacked } from "./ChartBarVerticalStacked"
 
 function App() {
   return (
     <>
       <ChartAreaLegend />
-      <ChartPieDonut />
+      <ChartPieDonutWithText />
       <ChartBarLabel />
       <SentimentStackList />
       <ChartBarVerticalStacked />

@@ -17,7 +17,6 @@ const data = [
   { name: "CNN Indonesia", positive: 95, neutral: 28, negative: 42 },
 ]
 
-const dividerStroke = "rgba(255,255,255,0.12)"
 
 export function SentimentStackList({ className }: { className?: string }) {
   return (
@@ -37,12 +36,13 @@ export function SentimentStackList({ className }: { className?: string }) {
 
             {/* pill bar */}
             <div className="h-16 w-full overflow-hidden rounded-full border border-white/10 bg-[#101426] cursor-pointer">
-              <ResponsiveContainer width="100%" height="100%" className={"cursor-pointer"}>
+              <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={[row]}
                   layout="vertical"
                   margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                   barCategoryGap={0}
+                  barGap={20}
                   onClick={() => console.log("Test")}
                 >
                   <defs>
@@ -73,9 +73,9 @@ export function SentimentStackList({ className }: { className?: string }) {
                     dataKey="positive"
                     stackId="s"
                     fill="url(#posGrad)"
-                    stroke={dividerStroke}
-                    strokeWidth={1}
-                    // radius={[999, 0, 0, 999]}
+                    stroke={"#7fe0d1"}
+                    strokeWidth={3}
+                    radius={[999, 0, 0, 999]}
                     isAnimationActive={false}
                   >
                     <LabelList
@@ -91,8 +91,8 @@ export function SentimentStackList({ className }: { className?: string }) {
                     dataKey="neutral"
                     stackId="s"
                     fill="url(#neuGrad)"
-                    stroke={dividerStroke}
-                    strokeWidth={1}
+                    stroke={"#0511ED"}
+                    strokeWidth={3}
                     radius={[0, 0, 0, 0]}
                     isAnimationActive={false}
                   >
@@ -109,8 +109,8 @@ export function SentimentStackList({ className }: { className?: string }) {
                     dataKey="negative"
                     stackId="s"
                     fill="url(#negGrad)"
-                    stroke={dividerStroke}
-                    strokeWidth={1}
+                    stroke={"#ED2B05"}
+                    strokeWidth={3}
                     radius={[0, 999, 999, 0]}
                     isAnimationActive={false}
                   >

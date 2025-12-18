@@ -60,6 +60,12 @@ export function ChartBarLabel() {
               strokeWidth={1}
               radius={14}
             >
+              <LabelList 
+                position="inside"
+                offset={12}
+                className="fill-destructive"
+                fontSize={12}
+              />
               <LabelList
                 position="top"
                 offset={12}

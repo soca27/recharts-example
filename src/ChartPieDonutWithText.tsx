@@ -1,6 +1,6 @@
 "use client"
 
-import { Pie, PieChart, Cell } from "recharts"
+import { Pie, PieChart, Cell, Label } from "recharts"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   ChartContainer,
@@ -8,6 +8,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import { useMemo } from "react"
 
 const chartData = [
   {
@@ -34,7 +35,11 @@ const chartConfig = {
   firefox: { label: "Firefox", color: "var(--chart-3)" },
 } satisfies ChartConfig
 
-export function ChartPieDonut() {
+export function ChartPieDonutWithText() {
+  const totalVisitors = useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
+  }, []);
+
   return (
     <Card className="flex flex-col">
       <CardContent className="flex-1 pb-0">
@@ -97,6 +102,35 @@ export function ChartPieDonut() {
               {chartData.map((entry) => (
                 <Cell key={entry.browser} fill={entry.fill} />
               ))}
+              <Label
+                content={({ viewBox }) => {
+                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                    return (
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          className="fill-foreground text-3xl font-bold"
+                        >
+                          {totalVisitors.toLocaleString()}
+                        </tspan>
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 24}
+                          className="fill-muted-foreground"
+                        >
+                          Visitors
+                        </tspan>
+                      </text>
+                    )
+                  }
+                }}
+              />
             </Pie>
           </PieChart>
         </ChartContainer>
