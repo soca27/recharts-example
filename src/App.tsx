@@ -8,9 +8,9 @@ function App() {
   return (
     <>
        {/* <ChartAreaLegend />  */}
-       {/* <ChartPieDonutWithText /> */}
+       <ChartPieDonutWithText />
       {/* <ChartBarLabel /> */}
-      <SentimentStackList />
+      {/* <SentimentStackList /> */}
       {/* <ChartBarVerticalStacked />  */}
     </>
   )
