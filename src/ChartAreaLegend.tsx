@@ -1,5 +1,4 @@
-"use client"
-
+import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import type { LegendProps } from "recharts"
 
@@ -55,7 +54,10 @@ function CustomLegendChartArea({ payload }: Pick<LegendProps, "payload">) {
 
         return (
           <div key={key} className="flex justify-center items-center gap-2">
-            <span className="relative inline-block h-3 w-8 cursor-pointer" onClick={() => console.log("Test")}>
+            <span
+              className="relative inline-block h-3 w-8 cursor-pointer"
+              onClick={() => console.log("Test")}
+            >
               <span
                 className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 rounded-full"
                 style={{ backgroundColor: color }}
@@ -76,50 +78,106 @@ function CustomLegendChartArea({ payload }: Pick<LegendProps, "payload">) {
 }
 
 export function ChartAreaLegend() {
+  const [hoveredKey, setHoveredKey] = React.useState<string | null>(null)
+
+  const isHovering = hoveredKey !== null
+  const isActive = (key: string) => hoveredKey === key
+
   return (
-    <Card>
+    <Card className="w-[418px]">
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <AreaChart
-            accessibilityLayer
-            data={chartData}
-            margin={{ left: 12, right: 12 }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Area
-              dataKey="mobile"
-              type="monotone"
-              fill="var(--color-mobile)"
-              fillOpacity={0.4}
-              stroke="var(--color-mobile)"
-              stackId="a"
-              dot={{ r: 3 }}
-              activeDot={{ r: 5 }}
-            />
-            <Area
-              dataKey="desktop"
-              type="monotone"
-              fill="var(--color-desktop)"
-              fillOpacity={0.4}
-              stroke="var(--color-desktop)"
-              stackId="a"
-              dot={{ r: 3 }}
-              activeDot={{ r: 5 }}
-            />
-            <ChartLegend content={<CustomLegendChartArea />} />
-          </AreaChart>
-        </ChartContainer>
+        <div className="[&_.recharts-layer]:cursor-pointer">
+          <ChartContainer config={chartConfig}>
+            <AreaChart
+              accessibilityLayer
+              data={chartData}
+              margin={{ left: 12, right: 12 }}
+              onMouseMove={(state) => {
+                const key = state?.activePayload?.[0]?.dataKey
+                setHoveredKey(typeof key === "string" ? key : null)
+              }}
+              onMouseLeave={() => setHoveredKey(null)}
+              onClick={() => console.log("Test")}
+            >
+              <defs>
+                <filter id="chart-brighten">
+                  {/* 1.15-1.3 custom lighter */}
+                  <feColorMatrix
+                    type="matrix"
+                    values="
+                      1.15 0    0    0    0
+                      0    1.15 0    0    0
+                      0    0    1.15 0    0
+                      0    0    0    1    0
+                    "
+                  />
+                </filter>
+              </defs>
+
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => value.slice(0, 3)}
+              />
+
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="line" />}
+              />
+
+              <Area
+                dataKey="mobile"
+                type="monotone"
+                fill="var(--color-mobile)"
+                stroke="var(--color-mobile)"
+                stackId="a"
+                dot={{ r: 3 }}
+                activeDot={{ r: 5 }}
+                // Highlight logic:
+                fillOpacity={
+                  !isHovering ? 0.4 : isActive("mobile") ? 0.65 : 0.18
+                }
+                strokeWidth={!isHovering ? 2 : isActive("mobile") ? 3 : 1.5}
+                style={{
+                  filter: !isHovering
+                    ? "none"
+                    : isActive("mobile")
+                      ? "url(#chart-brighten)"
+                      : "none",
+                  transition: "filter 120ms ease, opacity 120ms ease",
+                }}
+              />
+
+              <Area
+                dataKey="desktop"
+                type="monotone"
+                fill="var(--color-desktop)"
+                stroke="var(--color-desktop)"
+                stackId="a"
+                dot={{ r: 3 }}
+                activeDot={{ r: 5 }}
+                // Highlight logic:
+                fillOpacity={
+                  !isHovering ? 0.4 : isActive("desktop") ? 0.65 : 0.18
+                }
+                strokeWidth={!isHovering ? 2 : isActive("desktop") ? 3 : 1.5}
+                style={{
+                  filter: !isHovering
+                    ? "none"
+                    : isActive("desktop")
+                      ? "url(#chart-brighten)"
+                      : "none",
+                  transition: "filter 120ms ease, opacity 120ms ease",
+                }}
+              />
+
+              <ChartLegend content={<CustomLegendChartArea />} />
+            </AreaChart>
+          </ChartContainer>
+        </div>
       </CardContent>
     </Card>
   )

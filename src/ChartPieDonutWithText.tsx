@@ -1,5 +1,3 @@
-"use client"
-
 import { Pie, PieChart, Cell, Label } from "recharts"
 import { Card, CardContent } from "@/components/ui/card"
 import {

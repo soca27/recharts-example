@@ -7,11 +7,11 @@ import { ChartBarVerticalStacked } from "./ChartBarVerticalStacked"
 function App() {
   return (
     <>
-      <ChartAreaLegend />
-      <ChartPieDonutWithText />
-      <ChartBarLabel />
+       {/* <ChartAreaLegend />  */}
+       {/* <ChartPieDonutWithText /> */}
+      {/* <ChartBarLabel /> */}
       <SentimentStackList />
-      <ChartBarVerticalStacked />
+      {/* <ChartBarVerticalStacked />  */}
     </>
   )
 }
